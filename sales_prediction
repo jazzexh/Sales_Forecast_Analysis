@@ -1,59 +1,53 @@
+# Step 1: Import Libraries
 import pandas as pd
+import numpy as np
 import matplotlib.pyplot as plt
+import seaborn as sns
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
-import numpy as np
+from sklearn.metrics import mean_squared_error
 
-# Sample data generation
-data = {
-    'Date': ['2021-01-01', '2021-01-02', '2021-01-03', '2021-01-04'],
-    'Sales': [150, 200, 180, 220]
-}
+# Step 2: Load Sample Data
+data = pd.DataFrame({
+    'Month': ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+    'Sales': [12000, 15000, 13400, 14500, 16000, 17500, 16900, 18000, 17800, 18500, 19000, 20000],
+    'Region': ['East'] * 12,
+    'Product': ['A'] * 12,
+    'Advertising Spend': [3000, 3500, 3200, 3300, 3700, 4000, 3900, 4100, 4200, 4300, 4400, 4500]
+})
 
-# Convert data to a DataFrame
-df = pd.DataFrame(data)
+# Step 3: Data Overview
+print(data.head())
+print("\nData Summary:")
+print(data.describe())
 
-# Convert 'Date' to datetime format
-df['Date'] = pd.to_datetime(df['Date'])
-
-# Feature Engineering - Add 'Day' feature
-df['Day'] = df['Date'].dt.day
-
-# Plot the data
+# Step 4: Sales Trend
 plt.figure(figsize=(10, 6))
-plt.plot(df['Date'], df['Sales'], marker='o', color='b')
-plt.title('Sales over Time')
-plt.xlabel('Date')
+plt.plot(data['Month'], data['Sales'], marker='o')
+plt.title('Monthly Sales Trend')
+plt.xlabel('Month')
 plt.ylabel('Sales')
+plt.grid(True)
 plt.show()
 
-# Prepare data for model
-X = df[['Day']]  # Feature: Day
-y = df['Sales']  # Target: Sales
+# Step 5: Correlation Analysis
+sns.scatterplot(x='Advertising Spend', y='Sales', data=data)
+plt.title('Ad Spend vs Sales')
+plt.show()
 
-# Split data into training and testing sets
+# Step 6: Predictive Modeling
+X = data[['Advertising Spend']]
+y = data['Sales']
+
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-# Train a linear regression model
 model = LinearRegression()
 model.fit(X_train, y_train)
 
-# Make predictions
-y_pred = model.predict(X_test)
+predictions = model.predict(X_test)
+print("\nMean Squared Error:", mean_squared_error(y_test, predictions))
 
-# Evaluate the model
-print(f'Predicted Sales: {y_pred}')
-print(f'Actual Sales: {y_test.values}')
-
-# Add predictions to the DataFrame
-df['Predicted_Sales'] = model.predict(X)
-
-# Plot the forecasted vs actual sales
-plt.figure(figsize=(10, 6))
-plt.plot(df['Date'], df['Sales'], marker='o', label='Actual Sales')
-plt.plot(df['Date'], df['Predicted_Sales'], marker='x', label='Predicted Sales')
-plt.title('Sales Forecasting')
-plt.xlabel('Date')
-plt.ylabel('Sales')
-plt.legend()
-plt.show()
+# Step 7: Predict Future Sales
+future_ad_spend = pd.DataFrame({'Advertising Spend': [4600, 4700, 4800]})
+future_sales = model.predict(future_ad_spend)
+print("\nPredicted Future Sales:", future_sales)
