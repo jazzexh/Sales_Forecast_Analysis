@@ -1,14 +1,22 @@
 # Sales_Forecast_Analysis
-This project demonstrates sales forecasting using machine learning. It uses a linear regression model to predict sales based on historical data. The dataset is processed using pandas, visualized with matplotlib, and a model is trained using sklearn. This project can be extended for more complex models or additional features such as seasonality adjustments.
+---
+This project uses Python to analyze and predict sales based on advertising spend.
 
-Requirements
+## Tools Used
 
-Python 3.x
-pandas
-matplotlib
-scikit-learn
+- Python (Pandas, NumPy)
+- Visualization (Matplotlib, Seaborn)
+- Machine Learning (Scikit-learn)
 
-Usage
-Download or prepare your dataset in CSV format.
-Run the script to load data, train the model, and forecast future sales.
+## What It Does
 
+- Shows monthly sales trends  
+- Visualizes how ad spend affects sales  
+- Builds a simple linear regression model  
+- Predicts future sales based on ad budget
+
+## Goal
+
+To understand how advertising impacts sales and make simple sales forecasts.
+
+---
